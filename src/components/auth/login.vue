@@ -52,7 +52,8 @@
 
 <script>
   /*
-    eslint no-console: "error"
+    eslint no-console: "error",
+    no-alert: "error"
   */
   export default {
     name: 'login',
@@ -91,7 +92,31 @@
         this.error = [];
       },
       handleLogin(evt) {
+        const that = this;
         evt.preventDefault();
+        if (this.email && this.password) {
+          const formData = {
+            email: that.email,
+            password: that.password,
+          };
+          this.$store.dispatch('login', { email: formData.email, password: formData.password })
+            .then(() => {
+              this.$refs.modal.hide();
+              this.$router.go();
+            })
+            .catch((error) => {
+              this.statusAlert = true;
+              this.error = error.response.data.non_field_errors[0];
+            });
+        } else {
+          /*
+            eslint-disable
+          */
+          alert('email and password required for this action');
+          /*
+            eslint-enable
+          */
+        }
       },
     },
   };

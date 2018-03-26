@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <h1><a v-b-modal.modalLogin href="#">Inicia Sesion</a></h1>  
+    <h1 v-if="isLogin == false"><a  v-b-modal.modalLogin href="#">Inicia Sesion</a></h1> 
+    <h1 v-else><a href="#">Hola</a></h1> 
   </div>
 </template>
 
@@ -11,6 +12,11 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js PWA',
     };
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isAuthenticated;
+    },
   },
 };
 </script>
