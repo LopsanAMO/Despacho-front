@@ -3,6 +3,7 @@
     <header>
       <span>Vue.js PWA</span>
     </header>
+    <modal-login/>
     <main>
       <img src="./assets/logo.png" alt="Vue.js PWA">
       <router-view></router-view>
@@ -11,8 +12,15 @@
 </template>
 
 <script>
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import login from '@/components/auth/login';
+
 export default {
   name: 'app',
+  components: {
+    'modal-login': login,
+  },
 };
 </script>
 
