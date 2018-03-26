@@ -17,7 +17,7 @@ const getters = {
 const actions = {
   login({ commit }, authData) {
     return new Promise((resolve, reject) => {
-      axios.post('/users/login/', {
+      axios.post('users/login/', {
         email: authData.email,
         password: authData.password,
       })
