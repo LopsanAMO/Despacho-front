@@ -121,14 +121,3 @@
     },
   };
 </script>
-
-<style>
-  .fb-signin-button {
-    /* This is where you control how the button looks. Be creative! */
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 3px;
-    background-color: #4267b2;
-    color: #fff;
-  }
-</style>

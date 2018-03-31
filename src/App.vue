@@ -16,7 +16,7 @@
               <a class="nav-link" style="cursor: pointer;" v-on:click="logout">Cerrar sesión</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="cursor: pointer;" v-b-modal.modalEnfermera>Agregar Usuarios</a>
+              <a class="nav-link" style="cursor: pointer;" v-b-modal.modalClient>Agregar Clientes</a>
             </li>
           </ul>
         </div>
@@ -24,6 +24,7 @@
     </nav>
     </header>
     <modal-login/>
+    <modal-client/>
     <main>
       <router-view></router-view>
     </main>
@@ -34,11 +35,13 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import login from '@/components/auth/login';
+import client from '@/components/modal/client';
 
 export default {
   name: 'app',
   components: {
     'modal-login': login,
+    'modal-client': client,
   },
   methods: {
     logout() {
