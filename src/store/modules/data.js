@@ -14,12 +14,14 @@ const state = {
   },
   clientData: null,
   documents: null,
+  folders: null,
 };
 
 const getters = {
   user: state => state.user,
   documents: state => state.documents,
   clients: state => state.clientData,
+  folders: state => state.folders,
 };
 
 const actions = {
@@ -41,18 +43,30 @@ const actions = {
         });
       });
   },
+  getFolders({ commit }, name) {
+    axios.get(
+      `documents/folders/all?name=${name}`, {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        /* eslint-disable no-console */
+        console.log(res.data[0].folders);
+        /* eslint-enable no-console */
+        commit('folderData', {
+          folders: res.data[0].folders,
+        });
+      });
+  },
   getClients({ commit }) {
     axios.get(
       'documents/clients/all', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`,
         },
-      },
-    )
+      })
       .then((res) => {
-        /* eslint-disable no-console */
-        console.log(res);
-        /* eslint-enable no-console */
         commit('client', {
           clients: res.data.results,
         });
@@ -66,9 +80,6 @@ const actions = {
         },
       })
       .then((res) => {
-        /* eslint-disable no-console */
-        console.log(res);
-        /* eslint-enable no-console */
         commit('documentData', {
           docs: res.data.results,
         });
@@ -88,6 +99,9 @@ const mutations = {
   },
   client(state, clientDataInfo) {
     state.clientData = clientDataInfo.clients;
+  },
+  folderData(state, foldersData) {
+    state.folders = foldersData.folders;
   },
 };
 

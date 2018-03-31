@@ -7,8 +7,7 @@
       <div class="container">
         <b-table hover responsive :items="clientData" :fields="fields">
           <template slot="name" slot-scope="data">
-            <p v-on:click="toUser(''+data.item.url)">{{data.item.name}}</p>
-            <input type="hidden" :value="''+data.item.url" v-on:click="toUser(''+data.item.url)">
+            <p style="cursor: pointer;" v-on:click="toUser(''+data.item.url)">{{data.item.name}}</p>
           </template>
         </b-table>
       </div>
@@ -31,7 +30,7 @@ export default {
   },
   methods: {
     toUser(data) {
-      this.router.push({ name: 'user', params: { url: data } });
+      this.$router.push({ name: 'users', query: { name: data } });
     },
   },
   computed: {

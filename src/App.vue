@@ -3,26 +3,20 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#">Buscador</a>
+        <a class="navbar-brand" href="/">Buscador</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Ayuda</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" v-b-modal.modalSignUp>Regístrate</a>
-            </li>
             <li class="nav-item" v-if="isLoggedIn == false">
               <a class="nav-link" v-b-modal.modalLogin>Inicia sesión</a>
             </li>
             <li class="nav-item" v-else>
-              <a class="nav-link" v-on:click="logout">Cerrar sesión</a>
+              <a class="nav-link" style="cursor: pointer;" v-on:click="logout">Cerrar sesión</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" v-b-modal.modalEnfermera>Quiero ser enfermera</a>
+              <a class="nav-link" style="cursor: pointer;" v-b-modal.modalEnfermera>Agregar Usuarios</a>
             </li>
           </ul>
         </div>
