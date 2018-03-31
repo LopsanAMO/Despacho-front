@@ -25,7 +25,7 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
     this.$store.dispatch('getClients');
   },
   methods: {

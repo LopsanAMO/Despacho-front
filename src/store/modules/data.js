@@ -15,6 +15,7 @@ const state = {
   clientData: null,
   documents: null,
   folders: null,
+  folderUser: null,
 };
 
 const getters = {
@@ -22,6 +23,7 @@ const getters = {
   documents: state => state.documents,
   clients: state => state.clientData,
   folders: state => state.folders,
+  folderUser: state => state.folderUser,
 };
 
 const actions = {
@@ -51,11 +53,22 @@ const actions = {
         },
       })
       .then((res) => {
-        /* eslint-disable no-console */
-        console.log(res.data[0].folders);
-        /* eslint-enable no-console */
         commit('folderData', {
           folders: res.data[0].folders,
+          user: res.data[0].name,
+        });
+      });
+  },
+  getDocuments({ commit }, name) {
+    axios.get(
+      `documents/documents/all?folder=${name}`, {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        commit('documentData', {
+          docs: res.data,
         });
       });
   },
@@ -102,6 +115,7 @@ const mutations = {
   },
   folderData(state, foldersData) {
     state.folders = foldersData.folders;
+    state.folderUser = foldersData.user;
   },
 };
 
