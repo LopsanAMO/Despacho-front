@@ -12,12 +12,14 @@ const state = {
     last_name: null,
     email: null,
   },
+  clientData: null,
   documents: null,
 };
 
 const getters = {
   user: state => state.user,
   documents: state => state.documents,
+  clients: state => state.clientData,
 };
 
 const actions = {
@@ -36,6 +38,23 @@ const actions = {
             last_name: res.data.last_name,
             email: res.data.email,
           },
+        });
+      });
+  },
+  getClients({ commit }) {
+    axios.get(
+      'documents/clients/all', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+      },
+    )
+      .then((res) => {
+        /* eslint-disable no-console */
+        console.log(res);
+        /* eslint-enable no-console */
+        commit('client', {
+          clients: res.data.results,
         });
       });
   },
@@ -66,6 +85,9 @@ const mutations = {
   },
   documentData(state, docData) {
     state.documents = docData.docs;
+  },
+  client(state, clientDataInfo) {
+    state.clientData = clientDataInfo.clients;
   },
 };
 

@@ -5,11 +5,10 @@
     </div>
     <div v-else>
       <div class="container">
-        <b-table hover responsive :items="documentData">
-          <template slot="folder" slot-scope="row">
-            <p v-for="eq in row.value" :key="eq.name">
-              {{eq.name}}
-            </p>
+        <b-table hover responsive :items="clientData" :fields="fields">
+          <template slot="name" slot-scope="data">
+            <p v-on:click="toUser(''+data.item.url)">{{data.item.name}}</p>
+            <input type="hidden" :value="''+data.item.url" v-on:click="toUser(''+data.item.url)">
           </template>
         </b-table>
       </div>
@@ -22,18 +21,25 @@ export default {
   name: 'index',
   data() {
     return {
-      documents: null,
+      fields: [
+        { key: 'name', label: 'Nombre' },
+      ],
     };
   },
   created() {
-    this.$store.dispatch('getAllClients');
+    this.$store.dispatch('getClients');
+  },
+  methods: {
+    toUser(data) {
+      this.router.push({ name: 'user', params: { url: data } });
+    },
   },
   computed: {
     isLogin() {
       return this.$store.getters.isAuthenticated;
     },
-    documentData() {
-      return this.$store.getters.documents;
+    clientData() {
+      return this.$store.getters.clients;
     },
   },
 };
