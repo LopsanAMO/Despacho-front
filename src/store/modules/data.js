@@ -12,18 +12,12 @@ const state = {
     last_name: null,
     email: null,
   },
-  clientData: null,
   documents: null,
-  folders: null,
-  folderUser: null,
 };
 
 const getters = {
   user: state => state.user,
   documents: state => state.documents,
-  clients: state => state.clientData,
-  folders: state => state.folders,
-  folderUser: state => state.folderUser,
 };
 
 const actions = {
@@ -45,20 +39,6 @@ const actions = {
         });
       });
   },
-  getFolders({ commit }, name) {
-    axios.get(
-      `documents/folders/all?name=${name}`, {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        commit('folderData', {
-          folders: res.data[0].folders,
-          user: res.data[0].name,
-        });
-      });
-  },
   getDocuments({ commit }, name) {
     axios.get(
       `documents/documents/all?folder=${name}`, {
@@ -69,32 +49,6 @@ const actions = {
       .then((res) => {
         commit('documentData', {
           docs: res.data,
-        });
-      });
-  },
-  getClients({ commit }) {
-    axios.get(
-      'documents/clients/all', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        commit('client', {
-          clients: res.data.results,
-        });
-      });
-  },
-  getAllClients({ commit }) {
-    axios.get(
-      'documents/all', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        commit('documentData', {
-          docs: res.data.results,
         });
       });
   },
@@ -109,13 +63,6 @@ const mutations = {
   },
   documentData(state, docData) {
     state.documents = docData.docs;
-  },
-  client(state, clientDataInfo) {
-    state.clientData = clientDataInfo.clients;
-  },
-  folderData(state, foldersData) {
-    state.folders = foldersData.folders;
-    state.folderUser = foldersData.user;
   },
 };
 

@@ -6,6 +6,13 @@ import axios from '@/axios-auth';
 
 const state = {
   status: null,
+  clientId: null,
+  clientData: null,
+};
+
+const getters = {
+  clientID: state => state.clientId,
+  clients: state => state.clientData,
 };
 
 const actions = {
@@ -25,16 +32,58 @@ const actions = {
         .catch(error => reject(error.response.data));
     });
   },
+  getClient({ commit }, clientName) {
+    return new Promise((resolve, reject) => {
+      axios.get(
+        `documents/clients?name=${clientName}`, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          /*
+          eslint-disable
+        */
+        console.log(res.data.id);
+        /*
+          eslint-enable
+        */
+          commit('setClientID', res.data.id);
+          resolve(res.data.id);
+        })
+        .catch(error => reject(error));
+    });
+  },
+  getClients({ commit }) {
+    axios.get(
+      'documents/clients/all', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        commit('client', {
+          clients: res.data.results,
+        });
+      });
+  },
 };
 
 const mutations = {
   statusChange(state, statudData) {
     state.status = statudData;
   },
+  setClientID(state, userData) {
+    state.clientId = userData;
+  },
+  client(state, clientDataInfo) {
+    state.clientData = clientDataInfo.clients;
+  },
 };
 
 export default {
   state,
   actions,
+  getters,
   mutations,
 };

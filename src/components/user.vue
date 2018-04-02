@@ -6,8 +6,13 @@
     <div v-else>
       <b-container class="bv-example-row">
           <b-row>
-              <b-col cols="3">
+              <b-col cols="2">
                 <a href="/">Atras</a>
+              </b-col>
+              <b-col cols="6">
+              </b-col>
+              <b-col cols="3">
+                <p class="nav-link" style="cursor: pointer;" v-b-modal.modalFolder>Crear Nuevo Folder</p>
               </b-col>
           </b-row>
       </b-container>
@@ -31,6 +36,7 @@
     name: 'users',
     mounted() {
       this.$store.dispatch('getFolders', this.$route.query.name);
+      this.$store.dispatch('getClient', this.$route.query.name);
     },
     data() {
       return {
