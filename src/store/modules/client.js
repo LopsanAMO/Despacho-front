@@ -8,11 +8,13 @@ const state = {
   status: null,
   clientId: null,
   clientData: null,
+  clients_number: null,
 };
 
 const getters = {
   clientID: state => state.clientId,
   clients: state => state.clientData,
+  clientsNumber: state => state.clients_number,
 };
 
 const actions = {
@@ -47,9 +49,9 @@ const actions = {
         .catch(error => reject(error));
     });
   },
-  getClients({ commit }) {
+  getClientByNamePart({ commit }, name) {
     axios.get(
-      'documents/clients/all', {
+      `documents/clients/?name=${name}`, {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`,
         },
@@ -57,6 +59,21 @@ const actions = {
       .then((res) => {
         commit('client', {
           clients: res.data.results,
+          number: res.data.count,
+        });
+      });
+  },
+  getClients({ commit }, page) {
+    axios.get(
+      `documents/clients/all${page}`, {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        commit('client', {
+          clients: res.data.results,
+          number: res.data.count,
         });
       });
   },
@@ -71,6 +88,7 @@ const mutations = {
   },
   client(state, clientDataInfo) {
     state.clientData = clientDataInfo.clients;
+    state.clients_number = clientDataInfo.number;
   },
 };
 

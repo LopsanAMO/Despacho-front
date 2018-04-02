@@ -27,7 +27,7 @@
     <modal-client/>
     <modal-folder/>
     <modal-document/>
-    <main>
+    <main style="margin-top: 25px !important;">
       <router-view></router-view>
     </main>
   </div>
