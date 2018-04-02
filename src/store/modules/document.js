@@ -39,9 +39,26 @@ const actions = {
         })
         .then((res) => {
           commit('documentStatus', {
-            status: res.data.stattus,
+            status: res.data.status,
           });
           resolve(res.data.status);
+        })
+        .catch(error => reject(error));
+    });
+  },
+  deleteDocument({ commit }, docuemntName) {
+    return new Promise((resolve, reject) => {
+      axios.delete(
+        'documents/documents/2',
+        {
+          params: { name: docuemntName },
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('documentStatus', { status: res.data.status });
+          resolve(res);
         })
         .catch(error => reject(error));
     });

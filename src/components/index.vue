@@ -7,8 +7,8 @@
       <div class="container">
         <b-container fluid responsive>
           <b-row>
-            <b-col md="6" class="my-1">
-              <b-form-group horizontal label="Filter" class="mb-0">
+            <b-col md="8" class="my-1">
+              <b-form-group horizontal label="Filtro por nombre" class="mb-0">
                 <b-input-group>
                   <b-form-input v-model="filter" :input="filterClient()" placeholder="Escribe para buscar" />
                   <b-input-group-append>

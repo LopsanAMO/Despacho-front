@@ -27,6 +27,9 @@
           <template slot="folder" slot-scope="data">
             <a :href="'http://localhost:8000/media/'+data.item.document" target="_blank">Ver</a>
           </template>
+          <template slot="slug" slot-scope="data">
+            <p style="cursor: pointer; color: red;" v-on:click="deleteDocument(`${data.item.slug}`)">Eliminar</p>
+          </template>
         </b-table>
       </div>
     </div>
@@ -47,6 +50,7 @@
           { key: 'name', label: 'Nombre' },
           { key: 'created', label: 'Creado' },
           { key: 'folder', label: 'Ver' },
+          { key: 'slug', label: 'Eliminar' },
         ],
         name: this.$route.params.name,
       };
@@ -54,6 +58,21 @@
     methods: {
       back() {
         this.$router.go('-1');
+      },
+      deleteDocument(name) {
+        this.$store.dispatch('deleteDocument', name)
+          .then(() => {
+            this.$router.go();
+          })
+          .catch((error) => {
+            /*
+              eslint-disable
+            */
+            alert('No se pudo eliminar el archivo');
+            /*
+              eslint-enable
+            */
+          });
       },
     },
     computed: {

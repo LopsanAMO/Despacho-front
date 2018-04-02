@@ -51,7 +51,7 @@
       },
       createDocument(evt) {
         evt.preventDefault();
-        if (this.file) {
+        if (this.file && this.name) {
           const form = new FormData();
           form.append('document', this.file);
           form.append('name', this.name);
@@ -69,7 +69,7 @@
           /*
             eslint-disable
           */
-          alert('documento requerido');
+          alert('documento requerido y nombre de documento requeridos');
           /*
             eslint-enable
           */
