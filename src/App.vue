@@ -26,6 +26,7 @@
     <modal-login/>
     <modal-client/>
     <modal-folder/>
+    <modal-document/>
     <main>
       <router-view></router-view>
     </main>
@@ -38,6 +39,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import login from '@/components/auth/login';
 import client from '@/components/modal/client';
 import folder from '@/components/modal/folder';
+import documents from '@/components/modal/documents';
 
 export default {
   name: 'app',
@@ -45,6 +47,7 @@ export default {
     'modal-login': login,
     'modal-client': client,
     'modal-folder': folder,
+    'modal-document': documents,
   },
   methods: {
     logout() {

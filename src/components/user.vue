@@ -12,7 +12,7 @@
               <b-col cols="6">
               </b-col>
               <b-col cols="3">
-                <p class="nav-link" style="cursor: pointer;" v-b-modal.modalFolder>Crear Nuevo Folder</p>
+                <p class="nav-link" style="cursor: pointer;" v-b-modal.modalFolder>Agregar nuevo folder</p>
               </b-col>
           </b-row>
       </b-container>

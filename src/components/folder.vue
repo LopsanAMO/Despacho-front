@@ -6,8 +6,13 @@
     <div v-else>
       <b-container class="bv-example-row">
           <b-row>
-              <b-col cols="3">
+              <b-col cols="2">
                 <p style="cursor: pointer;" v-on:click.stop.prevent="back()">Atras</p>
+              </b-col>
+              <b-col cols="6">
+              </b-col>
+              <b-col cols="3">
+                <p class="nav-link" style="cursor: pointer;" v-b-modal.modalDocument>Agregar nuevo documento</p>
               </b-col>
           </b-row>
       </b-container>
@@ -34,6 +39,7 @@
     name: 'folder',
     mounted() {
       this.$store.dispatch('getDocuments', this.$route.query.folder);
+      this.$store.dispatch('getFolderInfo', this.$route.query.folder);
     },
     data() {
       return {

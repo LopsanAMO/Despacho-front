@@ -1,6 +1,6 @@
 <template>
-  <div id="folder">
-    <b-modal id="modalFolder"
+  <div id="documents">
+    <b-modal id="modalDocument"
              ref="modal"
              centered
              title="Inicia sesión para continuar"
@@ -12,12 +12,15 @@
            @dismissed="statusAlert=false">
            {{error}}
       </b-alert>
-      <form @submit.stop.prevent="createFolder">
+      <form @submit.stop.prevent="createDocument">
         <b-form-group>
-          <b-form-input v-model="name" placeholder="Nombre del folder"></b-form-input>
+          <b-form-input v-model="name" placeholder="Nombre del documento"></b-form-input>
+        </b-form-group>
+        <b-form-group>
+          <b-form-file v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
         </b-form-group>
       </form>
-      <b-btn class="mt-3" variant="outline-info" block @click="createFolder">Crear folder</b-btn>
+      <b-btn class="mt-3" variant="outline-info" block @click="createDocument">Crear folder</b-btn>
       <br>
     </b-modal>
   </div>
@@ -30,9 +33,10 @@
     no-alert: "error"
   */
   export default {
-    name: 'folder',
+    name: 'documents',
     data() {
       return {
+        file: null,
         name: '',
         statusAlert: false,
         error: [],
@@ -41,16 +45,18 @@
     methods: {
       clearData() {
         this.name = '';
+        this.file = null;
         this.statusAlert = false;
         this.error = [];
       },
-      createFolder(evt) {
+      createDocument(evt) {
         evt.preventDefault();
-        if (this.name) {
-          const formData = {
-            name: this.name,
-          };
-          this.$store.dispatch('createFolder', { name: formData.name, user: this.$store.getters.clientID })
+        if (this.file) {
+          const form = new FormData();
+          form.append('document', this.file);
+          form.append('name', this.name);
+          form.append('folder', this.$store.getters.folderID);
+          this.$store.dispatch('createDocument', form)
             .then(() => {
               this.$refs.modal.hide();
               this.$router.go();
@@ -63,7 +69,7 @@
           /*
             eslint-disable
           */
-          alert('nombre de cliente requerido');
+          alert('documento requerido');
           /*
             eslint-enable
           */
