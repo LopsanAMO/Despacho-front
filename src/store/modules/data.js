@@ -12,12 +12,10 @@ const state = {
     last_name: null,
     email: null,
   },
-  documents: null,
 };
 
 const getters = {
   user: state => state.user,
-  documents: state => state.documents,
 };
 
 const actions = {
@@ -39,19 +37,6 @@ const actions = {
         });
       });
   },
-  getDocuments({ commit }, name) {
-    axios.get(
-      `documents/documents/all?folder=${name}`, {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        commit('documentData', {
-          docs: res.data,
-        });
-      });
-  },
 };
 
 const mutations = {
@@ -60,9 +45,6 @@ const mutations = {
     state.user.first_name = userData.first_name;
     state.user.last_name = userData.last_name;
     state.user.email = userData.email;
-  },
-  documentData(state, docData) {
-    state.documents = docData.docs;
   },
 };
 
