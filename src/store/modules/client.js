@@ -41,13 +41,6 @@ const actions = {
           },
         })
         .then((res) => {
-          /*
-          eslint-disable
-        */
-        console.log(res.data.id);
-        /*
-          eslint-enable
-        */
           commit('setClientID', res.data.id);
           resolve(res.data.id);
         })
