@@ -64,7 +64,7 @@
           .then(() => {
             this.$router.go();
           })
-          .catch((error) => {
+          .catch(() => {
             /*
               eslint-disable
             */
