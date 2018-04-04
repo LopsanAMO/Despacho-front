@@ -25,7 +25,7 @@
             {{raw.value | formatDate}}
           </template>
           <template slot="folder" slot-scope="data">
-            <a :href="'hhttps://despacho-cloud.s3.amazonaws.com/'+data.item.document" target="_blank">Ver</a>
+            <a :href="'https://despacho-cloud.s3.amazonaws.com/'+data.item.document" target="_blank">Ver</a>
           </template>
           <template slot="slug" slot-scope="data">
             <p style="cursor: pointer; color: red;" v-on:click="deleteDocument(`${data.item.slug}`)">Eliminar</p>
