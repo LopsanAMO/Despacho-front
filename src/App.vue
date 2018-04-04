@@ -15,7 +15,7 @@
             <li class="nav-item" v-else>
               <a class="nav-link" style="cursor: pointer;" v-on:click="logout">Cerrar sesión</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isLoggedIn == true">
               <a class="nav-link" style="cursor: pointer;" v-b-modal.modalClient>Agregar Nuevo Cliente</a>
             </li>
           </ul>
