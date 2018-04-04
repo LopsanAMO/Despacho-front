@@ -52,7 +52,7 @@
           this.$store.dispatch('createClients', { name: formData.name })
             .then(() => {
               this.$refs.modal.hide();
-              this.$router.go();
+              this.$store.dispatch('getClients', '');
             })
             .catch((error) => {
               this.statusAlert = true;

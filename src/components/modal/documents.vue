@@ -59,7 +59,7 @@
           this.$store.dispatch('createDocument', form)
             .then(() => {
               this.$refs.modal.hide();
-              this.$router.go();
+              this.$store.dispatch('getDocuments', this.$route.query.folder);
             })
             .catch((error) => {
               this.statusAlert = true;

@@ -53,7 +53,7 @@
           this.$store.dispatch('createFolder', { name: formData.name, user: this.$store.getters.clientID })
             .then(() => {
               this.$refs.modal.hide();
-              this.$router.go();
+              this.$store.dispatch('getFolders', this.$route.query.name);
             })
             .catch((error) => {
               this.statusAlert = true;
