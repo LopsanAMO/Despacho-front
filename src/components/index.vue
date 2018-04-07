@@ -22,6 +22,9 @@
           <template slot="name" slot-scope="data">
             <p style="cursor: pointer;" v-on:click="toUser(''+data.item.url)">{{data.item.name}}</p>
           </template>
+          <template slot="url" slot-scope="data">
+            <p style="cursor: pointer; color: red;" v-on:click="deleteUser(`${data.item.slug}`, `${data.item.name}`)">Eliminar</p>
+          </template>
         </b-table>
         <b-row>
           <b-col md="6" class="my-1" responsive>
@@ -41,6 +44,7 @@ export default {
     return {
       fields: [
         { key: 'name', label: 'Nombre' },
+        { key: 'url', label: 'Eliminar' },
       ],
       totalRows: this.numberClient,
       perPage: 10,
@@ -74,6 +78,37 @@ export default {
       this.currentPageAux = this.currentPage;
       this.filter = '';
       this.filterAux = '';
+    },
+    deleteUser(clientName, name) {
+      /*
+        eslint-disable
+      */
+      if (confirm(`Seguro que deseas eliminar al cliente "${name}"`)) {
+      /*
+        eslint-enable
+      */
+        this.$store.dispatch('deleteClient', clientName)
+          .then(() => {
+            this.$store.dispatch('getClients', '');
+          })
+          .catch((error) => {
+            /*
+              eslint-disable
+            */
+            alert(error.detail.non_field_errors[0]);
+            /*
+              eslint-enable
+            */
+          });
+      } else {
+        /*
+          eslint-disable
+        */
+        console.log('cancel');
+        /*
+          eslint-enable
+        */
+      }
     },
     filterClient() {
       if (this.processingFilter === true && this.filter === this.filterAux) {

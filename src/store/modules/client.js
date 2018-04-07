@@ -77,6 +77,26 @@ const actions = {
         });
       });
   },
+  deleteClient({ commit }, clientName) {
+    return new Promise((resolve, reject) => {
+      axios.delete(
+        'documents/clients/2/', {
+          params: { name: clientName },
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('statusChange', {
+            status: res.data.status,
+          });
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 };
 
 const mutations = {
