@@ -24,6 +24,9 @@
           <template slot="created" slot-scope="raw">
             {{raw.value | formatDate}}
           </template>
+          <template slot="user" slot-scope="data">
+            <p style="cursor: pointer; color: red;" v-on:click="deleteFolder(`${data.item.slug}`, `${data.item.name}`)">Eliminar</p>
+          </template>
         </b-table>
       </div>
     </div>
@@ -43,12 +46,45 @@
         fields: [
           { key: 'name', label: 'Nombre' },
           { key: 'created', label: 'Creado' },
+          { key: 'user', label: 'Eliminar' },
         ],
       };
     },
     methods: {
       toDocuments(data) {
         this.$router.push({ name: 'folders', query: { folder: data }, params: { name: this.folderUser } });
+      },
+      deleteFolder(folderName, name) {
+        /*
+          eslint-disable
+        */
+        if (confirm(`Seguro que deseas eliminar el folder "${name}"`)) {
+        /*
+          eslint-enable
+        */
+          this.$store.dispatch('deleteFolder', folderName)
+            .then(() => {
+              this.$store.dispatch('getFolders', this.$route.query.name);
+              this.$store.dispatch('getClient', this.$route.query.name);
+            })
+            .catch((error) => {
+              /*
+                eslint-disable
+              */
+              alert(error.detail.non_field_errors[0]);
+              /*
+                eslint-enable
+              */
+            });
+        } else {
+          /*
+            eslint-disable
+          */
+          console.log('cancel');
+          /*
+            eslint-enable
+          */
+        }
       },
     },
     computed: {

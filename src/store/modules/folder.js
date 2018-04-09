@@ -66,6 +66,22 @@ const actions = {
         .catch(error => reject(error));
     });
   },
+  deleteFolder({ commit }, folderName) {
+    return new Promise((resolve, reject) => {
+      axios.delete(
+        'documents/folders/2/', {
+          params: { name: folderName },
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('folderStatus', { status: res.data.status });
+          resolve(res);
+        })
+        .catch(error => reject(error));
+    });
+  },
 };
 
 const mutations = {
