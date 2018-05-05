@@ -20,7 +20,7 @@
           <b-form-file v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
         </b-form-group>
       </form>
-      <b-btn class="mt-3" variant="outline-info" block @click="createDocument">Crear folder</b-btn>
+      <b-btn class="mt-3" variant="outline-info" block @click="createDocument">Crear documento</b-btn>
       <br>
     </b-modal>
   </div>
