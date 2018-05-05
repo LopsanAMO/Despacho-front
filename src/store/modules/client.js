@@ -64,18 +64,21 @@ const actions = {
       });
   },
   getClients({ commit }, page) {
-    axios.get(
-      `documents/clients/all${page}`, {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        commit('client', {
-          clients: res.data.results,
-          number: res.data.count,
+    return new Promise((resolve) => {
+      axios.get(
+        `documents/clients/all${page}`, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('client', {
+            clients: res.data.results,
+            number: res.data.count,
+          });
+          resolve(res);
         });
-      });
+    });
   },
   deleteClient({ commit }, clientName) {
     return new Promise((resolve, reject) => {

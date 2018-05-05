@@ -13,6 +13,7 @@
                   <b-form-input v-model="filter" :input="filterClient()" placeholder="Escribe para buscar" />
                   <b-input-group-append>
                     <b-btn :disabled="!filter" v-on:click="resetFilter()">Borrar busqueda</b-btn>
+                    <loading :active.sync="isLoading" :can-cancel="true" :on-cancel="whenCancelled"></loading>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -38,6 +39,10 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+
+import 'vue-loading-overlay/dist/vue-loading.min.css';
+
 export default {
   name: 'index',
   data() {
@@ -55,9 +60,16 @@ export default {
       currentPageAux: 1,
       filter: '',
       filterAux: '',
+      isLoading: false,
     };
   },
+  components: {
+    Loading,
+  },
   methods: {
+    whenCancelled() {
+      return true;
+    },
     toUser(data) {
       this.$router.push({ name: 'users', query: { name: data } });
     },
@@ -66,7 +78,12 @@ export default {
         return;
       }
       this.processing = true;
-      this.$store.dispatch('getClients', `?page=${this.currentPage}`);
+      this.isLoading = true;
+      this.$store.dispatch('getClients', `?page=${this.currentPage}`)
+        .then(() => {
+          this.isLoading = false;
+        });
+      // loader.hide();
       this.currentPageAux = this.currentPage;
     },
     resetFilter() {
@@ -74,7 +91,11 @@ export default {
         return;
       }
       this.processing = true;
-      this.$store.dispatch('getClients', '');
+      this.isLoading = true;
+      this.$store.dispatch('getClients', '')
+        .then(() => {
+          this.isLoading = false;
+        });
       this.currentPageAux = this.currentPage;
       this.filter = '';
       this.filterAux = '';
@@ -89,7 +110,11 @@ export default {
       */
         this.$store.dispatch('deleteClient', clientName)
           .then(() => {
-            this.$store.dispatch('getClients', '');
+            this.isLoading = true;
+            this.$store.dispatch('getClients', '')
+              .then(() => {
+                this.isLoading = false;
+              });
           })
           .catch((error) => {
             /*
