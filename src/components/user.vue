@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading" :can-cancel="true" :on-cancel="whenCancelled"></loading>
     <div v-if="isLogin == false">
       <h1><a  v-b-modal.modalLogin href="#">Inicia Sesion</a></h1> 
     </div>
@@ -35,11 +36,22 @@
 
 
 <script>
+  import Loading from 'vue-loading-overlay';
+
+  import 'vue-loading-overlay/dist/vue-loading.min.css';
+
   export default {
     name: 'users',
     mounted() {
       this.$store.dispatch('getFolders', this.$route.query.name);
-      this.$store.dispatch('getClient', this.$route.query.name);
+      this.isLoading = true;
+      this.$store.dispatch('getClient', this.$route.query.name)
+        .then(() => {
+          this.isLoading = false;
+        });
+    },
+    components: {
+      Loading,
     },
     data() {
       return {
@@ -48,6 +60,7 @@
           { key: 'created', label: 'Creado' },
           { key: 'user', label: 'Eliminar' },
         ],
+        isLoading: false,
       };
     },
     methods: {
@@ -65,7 +78,11 @@
           this.$store.dispatch('deleteFolder', folderName)
             .then(() => {
               this.$store.dispatch('getFolders', this.$route.query.name);
-              this.$store.dispatch('getClient', this.$route.query.name);
+              this.isLoading = true;
+              this.$store.dispatch('getClient', this.$route.query.name)
+                .then(() => {
+                  this.isLoading = false;
+                });
             })
             .catch((error) => {
               /*
