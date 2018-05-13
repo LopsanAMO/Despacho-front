@@ -27,6 +27,9 @@
           <template slot="folder" slot-scope="data">
             <a :href="'https://despacho-cloud.s3.amazonaws.com/'+data.item.document" target="_blank">Ver</a>
           </template>
+          <template slot="id" slot-scope="data">
+            <p style="cursor: pointer; color: green;" v-b-modal.modalUpdateDocument v-on:click="updateStateDocument(`${data.item.id}`, `${data.item.name}`)">Editar</p>
+          </template>
           <template slot="slug" slot-scope="data">
             <p style="cursor: pointer; color: red;" v-on:click="deleteDocument(`${data.item.slug}`)">Eliminar</p>
           </template>
@@ -49,10 +52,12 @@
         fields: [
           { key: 'name', label: 'Nombre' },
           { key: 'created', label: 'Creado' },
+          { key: 'id', label: 'Editar' },
           { key: 'folder', label: 'Ver' },
           { key: 'slug', label: 'Eliminar' },
         ],
         name: this.$route.params.name,
+        statusAlert: true,
       };
     },
     methods: {
@@ -62,7 +67,7 @@
       deleteDocument(name) {
         this.$store.dispatch('deleteDocument', name)
           .then(() => {
-            this.$router.go();
+            this.$store.dispatch('getDocuments', this.$route.query.folder);
           })
           .catch(() => {
             /*
@@ -73,6 +78,9 @@
               eslint-enable
             */
           });
+      },
+      updateStateDocument(id, name) {
+        this.$store.commit('documentShortInfo', { doc_name: name, doc_id: id });
       },
     },
     computed: {

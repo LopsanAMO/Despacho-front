@@ -3,7 +3,7 @@
     <b-modal id="modalDocument"
              ref="modal"
              centered
-             title="Inicia sesión para continuar"
+             title="Crear Documento"
              hide-footer
              @shown="clearData">
       <b-alert variant="danger"
@@ -22,6 +22,26 @@
       </form>
       <b-btn class="mt-3" variant="outline-info" block @click="createDocument">Crear documento</b-btn>
       <br>
+    </b-modal>
+    <b-modal id="modalUpdateDocument"
+             ref="modal2"
+             centered
+             title="Modificar Documento"
+             hide-footer
+             @shown="clearData">
+      <b-alert variant="danger"
+           dismissible
+           :show="statusAlert"
+           @dismissed="statusAlert=false">
+           {{error}}
+      </b-alert>
+      <form @submit.stop.prevent="updateDocument">
+        <b-form-group>
+          <p>Nombre del Documento</p>
+          <b-form-input v-model="name" v-bind:value="documentData.name" placeholder="Nombre del documento"></b-form-input>
+        </b-form-group>
+      </form>
+      <b-btn class="mt-3" variant="outline-info" block @click="updateDocument">Actualizar Documento</b-btn>
     </b-modal>
   </div>
 </template>
@@ -60,6 +80,7 @@
             .then(() => {
               this.$refs.modal.hide();
               this.$store.dispatch('getDocuments', this.$route.query.folder);
+              this.$store.dispatch('getFolderInfo', this.$route.query.folder);
             })
             .catch((error) => {
               this.statusAlert = true;
@@ -74,6 +95,24 @@
             eslint-enable
           */
         }
+      },
+      updateDocument(evt) {
+        evt.preventDefault();
+        this.$store.dispatch('updateDocument', { data: { name: this.name }, id: this.documentData.id })
+          .then(() => {
+            this.$refs.modal2.hide();
+            this.$store.dispatch('getDocuments', this.$route.query.folder);
+            this.$store.dispatch('getFolderInfo', this.$route.query.folder);
+          })
+          .catch((error) => {
+            this.statusAlert = true;
+            this.error = error.response.data.detail;
+          });
+      },
+    },
+    computed: {
+      documentData() {
+        return this.$store.getters.document_short_data_info;
       },
     },
   };

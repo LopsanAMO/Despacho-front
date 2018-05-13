@@ -7,10 +7,15 @@ import axios from '@/axios-auth';
 const state = {
   documents: null,
   document_status: null,
+  document_data: {
+    name: '',
+    id: 0,
+  },
 };
 
 const getters = {
   documents: state => state.documents,
+  document_short_data_info: state => state.document_data,
 };
 
 const actions = {
@@ -46,6 +51,24 @@ const actions = {
         .catch(error => reject(error));
     });
   },
+  updateDocument({ commit }, documentData) {
+    return new Promise((resolve, reject) => {
+      axios.put(
+        `documents/documents/${documentData.id}`,
+        documentData.data, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('documentStatus', {
+            status: res.data.status,
+          });
+          resolve(res);
+        })
+        .catch(error => reject(error));
+    });
+  },
   deleteDocument({ commit }, docuemntName) {
     return new Promise((resolve, reject) => {
       axios.delete(
@@ -71,6 +94,10 @@ const mutations = {
   },
   documentStatus(state, docData) {
     state.document_status = docData.status;
+  },
+  documentShortInfo(state, docData) {
+    state.document_data.name = docData.doc_name;
+    state.document_data.id = docData.doc_id;
   },
 };
 
