@@ -60,6 +60,7 @@
         name: '',
         statusAlert: false,
         error: [],
+        isLoading: false,
       };
     },
     methods: {
@@ -79,7 +80,11 @@
           this.$store.dispatch('createDocument', form)
             .then(() => {
               this.$refs.modal.hide();
-              this.$store.dispatch('getDocuments', this.$route.query.folder);
+              this.isLoading = true;
+              this.$store.dispatch('getDocuments', this.$route.query.folder)
+                .then(() => {
+                  this.isLoading = false;
+                });
               this.$store.dispatch('getFolderInfo', this.$route.query.folder);
             })
             .catch((error) => {
@@ -101,7 +106,11 @@
         this.$store.dispatch('updateDocument', { data: { name: this.name }, id: this.documentData.id })
           .then(() => {
             this.$refs.modal2.hide();
-            this.$store.dispatch('getDocuments', this.$route.query.folder);
+            this.isLoading = true;
+            this.$store.dispatch('getDocuments', this.$route.query.folder)
+              .then(() => {
+                this.isLoading = false;
+              });
             this.$store.dispatch('getFolderInfo', this.$route.query.folder);
           })
           .catch((error) => {

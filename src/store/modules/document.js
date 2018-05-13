@@ -20,18 +20,22 @@ const getters = {
 
 const actions = {
   getDocuments({ commit }, name) {
-    axios.get(
-      `documents/documents/all?folder=${name}`, {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        commit('documentData', {
-          docs: res.data,
-        });
-      });
+    return new Promise((resolve, reject) => {
+      axios.get(
+        `documents/documents/all?folder=${name}`, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          commit('documentData', {
+            docs: res.data,
+          });
+          resolve(res);
+        })
+        .catch(error => reject(error));
+    });
   },
   createDocument({ commit }, formdata) {
     return new Promise((resolve, reject) => {

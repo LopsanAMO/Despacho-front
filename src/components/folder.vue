@@ -1,6 +1,7 @@
 <template>
   <div id="folder">
-   <div v-if="isLogin == false">
+  <loading :active.sync="isLoading" :can-cancel="true" :on-cancel="whenCancelled"></loading>
+  <div v-if="isLogin == false">
       <h1><a  v-b-modal.modalLogin href="#">Inicia Sesion</a></h1> 
     </div>
     <div v-else>
@@ -41,11 +42,22 @@
 
 
 <script>
+  import Loading from 'vue-loading-overlay';
+
+  import 'vue-loading-overlay/dist/vue-loading.min.css';
+
   export default {
     name: 'folder',
     mounted() {
-      this.$store.dispatch('getDocuments', this.$route.query.folder);
+      this.isLoading = true;
+      this.$store.dispatch('getDocuments', this.$route.query.folder)
+        .then(() => {
+          this.isLoading = false;
+        });
       this.$store.dispatch('getFolderInfo', this.$route.query.folder);
+    },
+    components: {
+      Loading,
     },
     data() {
       return {
@@ -58,6 +70,7 @@
         ],
         name: this.$route.params.name,
         statusAlert: true,
+        isLoading: false,
       };
     },
     methods: {
@@ -67,7 +80,11 @@
       deleteDocument(name) {
         this.$store.dispatch('deleteDocument', name)
           .then(() => {
-            this.$store.dispatch('getDocuments', this.$route.query.folder);
+            this.isLoading = true;
+            this.$store.dispatch('getDocuments', this.$route.query.folder)
+              .then(() => {
+                this.isLoading = false;
+              });
           })
           .catch(() => {
             /*
