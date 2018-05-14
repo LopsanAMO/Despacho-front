@@ -95,7 +95,7 @@
               /*
                 eslint-disable
               */
-              alert(error.detail.non_field_errors[0]);
+              alert(error.response.data.detail);
               /*
                 eslint-enable
               */

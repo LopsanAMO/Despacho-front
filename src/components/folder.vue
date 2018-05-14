@@ -89,11 +89,12 @@
                 this.isLoading = false;
               });
           })
-          .catch(() => {
+          .catch((error) => {
             /*
               eslint-disable
             */
-            alert('No se pudo eliminar el archivo');
+            console.log(error.response.data.detail);
+            alert(error.response.data.detail);
             /*
               eslint-enable
             */
