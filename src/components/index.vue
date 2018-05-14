@@ -26,6 +26,9 @@
           <template slot="url" slot-scope="data">
             <p style="cursor: pointer; color: red;" v-on:click="deleteUser(`${data.item.slug}`, `${data.item.name}`)">Eliminar</p>
           </template>
+          <template slot="id" slot-scope="data">
+            <p style="cursor: pointer; color: green;" v-b-modal.modalUpdateClient v-on:click="updateStateClient(`${data.item.name}`, `${data.item.id}`)">Editar</p>
+          </template>
         </b-table>
         <b-row>
           <b-col md="6" class="my-1" responsive>
@@ -49,6 +52,7 @@ export default {
     return {
       fields: [
         { key: 'name', label: 'Nombre' },
+        { key: 'id', label: 'Editar' },
         { key: 'url', label: 'Eliminar' },
       ],
       totalRows: this.numberClient,
@@ -61,6 +65,7 @@ export default {
       filter: '',
       filterAux: '',
       isLoading: false,
+      name: '',
     };
   },
   components: {
@@ -99,6 +104,9 @@ export default {
       this.currentPageAux = this.currentPage;
       this.filter = '';
       this.filterAux = '';
+    },
+    updateStateClient(name, id) {
+      this.$store.commit('clientShortInfo', { client_name: name, client_id: id });
     },
     deleteUser(clientName, name) {
       /*

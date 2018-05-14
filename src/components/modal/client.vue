@@ -10,7 +10,7 @@
            dismissible
            :show="statusAlert"
            @dismissed="statusAlert=false">
-           {{error}}
+        {{error}}
       </b-alert>
       <form @submit.stop.prevent="createClient">
         <b-form-group>
@@ -19,6 +19,26 @@
       </form>
       <b-btn class="mt-3" variant="outline-info" block @click="createClient">Crear Cliente</b-btn>
       <br>
+    </b-modal>
+    <b-modal id="modalUpdateClient"
+             ref="modal2"
+             centered
+             title="Actualizar Cliente"
+             hide-footer
+             @shown="clearData">
+      <b-alert variant="danger"
+               dismissible
+               :show="statusAlert"
+               @dismissed="statusAlert=false">
+        {{error}}
+      </b-alert>
+      <form @submit.stop.prevent="updateClient">
+        <b-form-group>
+          <p>Nombre de Cliente</p>
+          <b-form-input v-model="name" v-bind:value="clientData.name" placeholder="Nombre del cliente"></b-form-input>
+        </b-form-group>
+      </form>
+      <b-btn class="mt-3" variant="outline-info" block @click="updateClient">Actualizar Cliente</b-btn>
     </b-modal>
   </div>
 </template>
@@ -35,6 +55,7 @@
         name: '',
         statusAlert: false,
         error: [],
+        isLoading: false,
       };
     },
     methods: {
@@ -67,6 +88,28 @@
             eslint-enable
           */
         }
+      },
+      updateClient(evt) {
+        evt.preventDefault();
+        this.$store.dispatch('updateClientData', { data: { name: this.name }, id: this.clientData.id })
+          .then(() => {
+            this.$refs.modal2.hide();
+            this.isLoading = true;
+            this.$store.dispatch('getClients', '?page=1')
+              .then(() => {
+                this.isLoading = false;
+              });
+            this.$forceUpdate();
+          })
+          .catch((error) => {
+            this.statusAlert = true;
+            this.error = error.response.data.detail;
+          });
+      },
+    },
+    computed: {
+      clientData() {
+        return this.$store.getters.client_short_data_info;
       },
     },
   };

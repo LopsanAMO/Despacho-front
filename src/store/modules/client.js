@@ -9,12 +9,17 @@ const state = {
   clientId: null,
   clientData: null,
   clients_number: null,
+  client_data: {
+    name: '',
+    id: 0,
+  },
 };
 
 const getters = {
   clientID: state => state.clientId,
   clients: state => state.clientData,
   clientsNumber: state => state.clients_number,
+  client_short_data_info: state => state.client_data,
 };
 
 const actions = {
@@ -80,6 +85,24 @@ const actions = {
         });
     });
   },
+  updateClientData({ commit }, clientData) {
+    return new Promise((resolve, reject) => {
+      axios.put(
+        `documents/clients/${clientData.id}/`,
+        clientData.data, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('statusChange', {
+            status: res.data.status,
+          });
+          resolve(res);
+        })
+        .catch(error => reject(error));
+    });
+  },
   deleteClient({ commit }, clientName) {
     return new Promise((resolve, reject) => {
       axios.delete(
@@ -95,9 +118,7 @@ const actions = {
           });
           resolve(res);
         })
-        .catch((error) => {
-          reject(error);
-        });
+        .catch(error => reject(error));
     });
   },
 };
@@ -112,6 +133,10 @@ const mutations = {
   client(state, clientDataInfo) {
     state.clientData = clientDataInfo.clients;
     state.clients_number = clientDataInfo.number;
+  },
+  clientShortInfo(state, clientData) {
+    state.client_data.name = clientData.client_name;
+    state.client_data.id = clientData.client_id;
   },
 };
 
