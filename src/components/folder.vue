@@ -74,6 +74,9 @@
       };
     },
     methods: {
+      whenCancelled() {
+        return true;
+      },
       back() {
         this.$router.go('-1');
       },

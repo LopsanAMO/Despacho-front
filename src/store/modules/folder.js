@@ -10,12 +10,17 @@ const state = {
   folder_user: null,
   folder_status: null,
   folder_id: null,
+  folder_data: {
+    name: '',
+    id: 0,
+  },
 };
 
 const getters = {
   folders: state => state.folders,
   folderUser: state => state.folder_user,
   folderID: state => state.folder_id,
+  folder_short_data_info: state => state.folder_data,
 };
 
 const actions = {
@@ -66,6 +71,24 @@ const actions = {
         .catch(error => reject(error));
     });
   },
+  updateFolder({ commit }, folderData) {
+    return new Promise((resolve, reject) => {
+      axios.put(
+        `documents/folders/${folderData.id}/`,
+        folderData.data, {
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          commit('folderStatus', {
+            status: res.data.status,
+          });
+          resolve(res);
+        })
+        .catch(error => reject(error));
+    });
+  },
   deleteFolder({ commit }, folderName) {
     return new Promise((resolve, reject) => {
       axios.delete(
@@ -94,6 +117,10 @@ const mutations = {
   },
   folderID(state, folderData) {
     state.folder_id = folderData.id;
+  },
+  folderShortInfo(state, folderData) {
+    state.folder_data.name = folderData.folder_name;
+    state.folder_data.id = folderData.folder_id;
   },
 };
 

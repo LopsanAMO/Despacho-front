@@ -25,6 +25,9 @@
           <template slot="created" slot-scope="raw">
             {{raw.value | formatDate}}
           </template>
+          <template slot="id" slot-scope="data">
+            <p style="cursor: pointer; color: green;" v-b-modal.modalUpdateFolder v-on:click="updateStateFolder(`${data.item.name}`, `${data.item.id}`)">Editar</p>
+          </template>
           <template slot="user" slot-scope="data">
             <p style="cursor: pointer; color: red;" v-on:click="deleteFolder(`${data.item.slug}`, `${data.item.name}`)">Eliminar</p>
           </template>
@@ -58,12 +61,16 @@
         fields: [
           { key: 'name', label: 'Nombre' },
           { key: 'created', label: 'Creado' },
+          { key: 'id', label: 'Editar' },
           { key: 'user', label: 'Eliminar' },
         ],
         isLoading: false,
       };
     },
     methods: {
+      whenCancelled() {
+        return true;
+      },
       toDocuments(data) {
         this.$router.push({ name: 'folders', query: { folder: data }, params: { name: this.folderUser } });
       },
@@ -102,6 +109,9 @@
             eslint-enable
           */
         }
+      },
+      updateStateFolder(name, id) {
+        this.$store.commit('folderShortInfo', { folder_name: name, folder_id: id });
       },
     },
     computed: {
